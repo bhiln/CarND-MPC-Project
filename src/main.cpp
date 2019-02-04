@@ -94,49 +94,11 @@ int main() {
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
 
-          // static bool first = true;
-          // static Eigen::VectorXd coeffs;
-          // static std::vector<double> x_vals = {};
-          // static std::vector<double> y_vals = {};
-          // static std::vector<double> psi_vals = {};
-          // static std::vector<double> v_vals = {};
-          // static std::vector<double> cte_vals = {};
-          // static std::vector<double> epsi_vals = {};
-          // static std::vector<double> delta_vals = {};
-          // static std::vector<double> a_vals = {};
-
-          // std::cout << "1" << endl;
-
-          /*
-          * TODO: Calculate steering angle and throttle using MPC.
-          *
-          * Both are in between [-1, 1].
-          *
-          */
-          // double steer_value;
-          // double throttle_value;
-
-          // if (first){
-          //   std::cout << "1.5" << endl;
-          //   auto coeffs = polyfit(Eigen::VectorXd(ptsx.data()), Eigen::VectorXd(ptsy.data()), 1);
-          //   std::cout << "2" << endl;
-          //   double cte = polyeval(coeffs, px) - py;
-          //   std::cout << "3" << endl;
-          //   double epsi = psi - atan(coeffs[1]);
-          //   std::cout << "4" << endl;
-          //   x_vals.push_back(px);
-          //   y_vals.push_back(py);
-          //   psi_vals.push_back(psi);
-          //   v_vals.push_back(v);
-          //   cte_vals.push_back(cte);
-          //   epsi_vals.push_back(epsi);
-          //   first = false;
-          // }
-          // std::cout << "5" << endl;
-
           vector<double> waypoints_x;
           vector<double> waypoints_y;
 
+          // This transformation was used from https://github.com/jeremy-shannon/CarND-MPC-Project/blob/master/src/MPC.cpp
+          // to get me up and running with the MPC.
           // transform waypoints to be from car's perspective
           // this means we can consider px = 0, py = 0, and psi = 0
           // greatly simplifying future calculations
