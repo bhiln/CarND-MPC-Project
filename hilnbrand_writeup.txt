@@ -1,0 +1,19 @@
+The Model
+The model is implemented in MPC.cpp, lines 133-140. To create the model, all parts must be calculated for every timestep: x position, y position, vehicle heading (psi), velocity, crosstrack error, and vehicle heading error. The model is defined by the following equations:
+x_[t+1] = x[t] + v[t] * cos(psi[t]) * dt
+y_[t+1] = y[t] + v[t] * sin(psi[t]) * dt
+psi_[t+1] = psi[t] + v[t] / Lf * delta[t] * dt
+v_[t+1] = v[t] + a[t] * dt
+cte[t+1] = f(x[t]) - y[t] + v[t] * sin(epsi[t]) * dt
+epsi[t+1] = psi[t] - psides[t] + v[t] * delta[t] / Lf * dt
+
+Timestep Length and Elapsed Duration
+N and dt are very important for a MPC. These two values depict the spacing and number of time steps ahead that the MPC will simulate, resulting in a look-ahead window. This is very important for the vehicle. Too short a lookahead window, and the vehicle might not have enough trajectory calculated to accurately stay on the road (since the simulated driving path gets less and less accurate the farther away from the car it gets due to compounding error). Too long of a lookahead window and the calculation may get too expensive for the processor. Additionally, long lookahead windows are unnecessary because they will be re-calculated in a very short amount of time. Only the very beginning of the path will be actuated. In this project, I used the default from the class: N=25, dt=0.05. This means that there will be 25 points, 0.05 seconds apart from each other, meaning that there will be a 1.25 second lookahead window. This is long enough to be able to calculate a new simulation before reaching the end. I also tried N=30 and dt=0.1 for a 3 second lookahead window, but this proved to be too computationally expensive.
+
+Polynomial Fitting and MPC Preprocessing
+For this part of the project, I needed a little help. After researching online, I found another MPC implementation (documented in my code) that showed how to take the global points and transform them to vehicle coordinates (relative to the vehicle) so that the future calculations were all relative to the vehicle and easier to understand. This happens in main, every time new information is received from the simulation. The points are transformed to VCS. Next a polynomial is fit to these values. Next, using the coefficients of the polynomial, the cross track error and vehicle heading error are calculated. These are later used to minimize the error to bring the vehicle back to it's desired orientation and location.
+
+Model Predictive Control with Latency
+To deal with latency, a point from the simulation further ahead of the vehicle is selected to use as the starting point for the next simulation. This is because this is where the vehicle will likely be by the time the actuation instructions are realized by the vehicle.
+
+The simulated vehicle is able to traverse the entire track.
